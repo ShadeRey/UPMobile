@@ -17,10 +17,10 @@ childColumns = "genre_id")},
 indices = {@Index(value = {"song_id"}), @Index(value = "genre_id")})
 public class song_genre {
     @PrimaryKey
-    private long song_genre_id;
+    public long song_genre_id;
     @ColumnInfo(name = "song_id")
-    private long song_id;
+    public long song_id;
     @ColumnInfo(name = "genre_id")
-    private long genre_id;
+    public long genre_id;
     public song_genre(){}
 }

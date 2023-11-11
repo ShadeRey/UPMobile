@@ -7,10 +7,14 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "songs")
 public class songs {
     @PrimaryKey
-    private long song_id;
+    public long song_id;
     @ColumnInfo(name = "song_name")
-    private String song_name;
+    public String song_name;
     @ColumnInfo(name = "song_publishing_year")
-    private int song_publishing_year;
+    public int song_publishing_year;
     public songs(){}
+
+    public String getName() {
+        return this.song_name;
+    }
 }

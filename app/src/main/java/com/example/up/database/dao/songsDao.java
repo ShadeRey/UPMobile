@@ -22,4 +22,7 @@ public interface songsDao {
 
     @Query("SELECT * FROM songs")
     List<songs> getAllSongs();
+
+    @Query("SELECT * FROM songs WHERE song_publishing_year=:year")
+    List<songs> getAllSongsByYear(int year);
 }

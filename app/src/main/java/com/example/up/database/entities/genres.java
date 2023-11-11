@@ -7,9 +7,9 @@ import androidx.room.PrimaryKey;
 @Entity (tableName = "genres")
 public class genres {
     @PrimaryKey
-    private long genres_id;
+    public long genre_id;
     @ColumnInfo
-    private String genre_name;
+    public String genre_name;
     public genres(){}
 }
 

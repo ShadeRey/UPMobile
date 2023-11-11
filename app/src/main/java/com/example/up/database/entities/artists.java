@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey;
 @Entity (tableName = "artists")
 public class artists {
     @PrimaryKey
-    private long artist_id;
+    public long artist_id;
     @ColumnInfo
-    private String artist_first_name;
+    public String artist_first_name;
     @ColumnInfo
-    private String artist_last_name;
+    public String artist_last_name;
     public artists(){}
 }
