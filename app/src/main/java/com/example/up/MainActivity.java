@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.up.databinding.ActivityMainBinding;
-import com.example.up.fragments.SongsFragment;
+import com.example.up.fragments.ArtistFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,6 +15,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.main_fragment, new ArtistFragment(), "artists")
+                .addToBackStack(null)
+                .commit();
     }
 }

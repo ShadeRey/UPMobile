@@ -8,6 +8,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.up.database.entities.artists;
+import com.example.up.database.entities.songs;
 
 import java.util.List;
 

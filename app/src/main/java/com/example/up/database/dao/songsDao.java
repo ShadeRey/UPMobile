@@ -1,5 +1,6 @@
 package com.example.up.database.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -23,6 +24,6 @@ public interface songsDao {
     @Query("SELECT * FROM songs")
     List<songs> getAllSongs();
 
-    @Query("SELECT * FROM songs WHERE song_publishing_year=:year")
+    @Query("SELECT * FROM songs WHERE song_publishing_year = :year")
     List<songs> getAllSongsByYear(int year);
 }

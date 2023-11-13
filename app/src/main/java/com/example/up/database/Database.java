@@ -20,7 +20,7 @@ import com.example.up.database.entities.song_album;
 import com.example.up.database.entities.song_genre;
 import com.example.up.database.entities.songs;
 
-@androidx.room.Database(entities = {albums.class, artists.class, songs.class, genres.class, artist_song.class, song_album.class, song_genre.class}, version = 1)
+@androidx.room.Database(entities = {albums.class, artists.class, songs.class, genres.class, artist_song.class, song_album.class, song_genre.class}, version = 2)
 public abstract class Database extends RoomDatabase {
     public abstract albumsDao albumDao();
     public abstract artistsDao artistDao();
