@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.up.R;
+import com.example.up.adapters.artistAdapter;
 import com.example.up.database.entities.artists;
 import com.example.up.database.Database;
 import com.example.up.database.viewmodels.artistsViewModel;
@@ -27,6 +29,7 @@ public class ArtistFragment extends Fragment {
 
     FragmentArtistBinding binding;
     artistsViewModel viewModel;
+    artistAdapter artistAdapt;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -43,6 +46,7 @@ public class ArtistFragment extends Fragment {
         showArtistsList();
         addBtnInit();
         deleteArtist();
+        updateArtist();
     }
 
     private void showArtistsList(){
@@ -51,13 +55,8 @@ public class ArtistFragment extends Fragment {
             public void run() {
                 Database db = Database.getDatabase(getContext());
                 List<artists> artistsList = db.artistDao().getAllArtists();
-                List<String> artistsListString = new ArrayList<>();
-                for (artists item: artistsList
-                ) {
-                    artistsListString.add(item.artist_first_name+" "+item.artist_last_name);
-                }
-                ArrayAdapter<String> adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, artistsListString);
-                binding.artistsView.setAdapter(adapter);
+                artistAdapt = new artistAdapter(getContext(), R.layout.artist_item, artistsList);
+                binding.artistsView.setAdapter(artistAdapt);
             }
         });
         thread.start();
@@ -78,18 +77,41 @@ public class ArtistFragment extends Fragment {
     }
 
     private void deleteArtist(){
-        Thread thread = new Thread(new Runnable() {
+
+        binding.artistsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void run() {
-                binding.artistsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Thread thread = new Thread(new Runnable() {
                     @Override
-                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        viewModel.deleteArtist((artists)adapterView.getSelectedItem());
-                        return false;
+                    public void run() {
+                        artists artists = artistAdapt.getItem(i);
+                        viewModel.deleteArtist(artists);
+                        removeArtistOnMainThread(artists);
                     }
                 });
-                thread.
+                thread.start();
+                return false;
             }
-        })
+        });
+    }
+
+    private void removeArtistOnMainThread(artists artist) {
+        requireActivity().runOnUiThread(() -> {
+            artistAdapt.remove(artist);
+        });
+    }
+
+    private void updateArtist(){
+        binding.artistsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.main_fragment, new ArtistAddFragment(true, artistAdapt.getItem(i)), "artistAdd")
+                        .addToBackStack("artistAdd")
+                        .commit();
+            }
+        });
     }
 }

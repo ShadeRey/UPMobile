@@ -33,4 +33,12 @@ public class artistsViewModel extends AndroidViewModel {
         Thread thread = new Thread(deleteArtistRnb);
         thread.start();
     }
+
+    public void updateArtist(artists item){
+        Runnable updateArtistRnb = ()->{
+            database.artistDao().update(item);
+        };
+        Thread thread = new Thread(updateArtistRnb);
+        thread.start();
+    }
 }
