@@ -19,6 +19,9 @@ import com.example.up.database.viewmodels.artistsViewModel;
 import com.example.up.databinding.FragmentArtistAddBinding;
 import com.example.up.databinding.FragmentArtistBinding;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ArtistAddFragment extends Fragment {
     private boolean update;
     private artists upd;
@@ -48,7 +51,7 @@ public class ArtistAddFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(this).get(artistsViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(artistsViewModel.class);
         binding = FragmentArtistAddBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -62,10 +65,11 @@ public class ArtistAddFragment extends Fragment {
             binding.addArtistLastName.setText(upd.artist_last_name);
             binding.addArtistUpdate.setOnClickListener(view1 -> {
                 artists item = new artists();
+                item.artist_id = upd.artist_id;
                 item.artist_first_name = binding.addArtistFirstName.getText().toString();
                 item.artist_last_name = binding.addArtistLastName.getText().toString();
                 Log.d(ArtistAddFragment.class.getName(), String.format("Updating artist with id %d to %s %s", item.artist_id, item.artist_first_name, item.artist_last_name));
-                viewModel.updateArtist(item);
+                viewModel.updateArtist(upd, item);
                 getActivity().getSupportFragmentManager().popBackStack();
             });
         } else {

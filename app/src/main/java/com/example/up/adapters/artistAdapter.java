@@ -67,4 +67,9 @@ public class artistAdapter extends ArrayAdapter<artists> {
         super.remove(object);
         notifyDataSetChanged();
     }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
 }

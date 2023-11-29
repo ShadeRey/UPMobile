@@ -30,39 +30,37 @@ public class ArtistFragment extends Fragment {
     FragmentArtistBinding binding;
     artistsViewModel viewModel;
     artistAdapter artistAdapt;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState){
-        viewModel = new ViewModelProvider(this).get(artistsViewModel.class);
-        binding = FragmentArtistBinding.inflate(inflater,container,false);
+                             @Nullable Bundle savedInstanceState) {
+        viewModel = new ViewModelProvider(requireActivity()).get(artistsViewModel.class);
+        binding = FragmentArtistBinding.inflate(inflater, container, false);
+
+        viewModel.artistsLiveData.observe(getViewLifecycleOwner(), artists -> {
+            artistAdapt = new artistAdapter(getContext(), R.layout.artist_item, artists);
+            binding.artistsView.setAdapter(artistAdapt);
+            //artistAdapt.notifyDataSetChanged();
+            if (artists.size() != 0) {
+                binding.prgsBar.setVisibility(View.GONE);
+            }
+        });
+
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        showArtistsList();
         addBtnInit();
         deleteArtist();
         updateArtist();
     }
 
-    private void showArtistsList(){
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Database db = Database.getDatabase(getContext());
-                List<artists> artistsList = db.artistDao().getAllArtists();
-                artistAdapt = new artistAdapter(getContext(), R.layout.artist_item, artistsList);
-                binding.artistsView.setAdapter(artistAdapt);
-            }
-        });
-        thread.start();
-    }
 
-    private void addBtnInit(){
+    private void addBtnInit() {
         binding.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +74,7 @@ public class ArtistFragment extends Fragment {
         });
     }
 
-    private void deleteArtist(){
+    private void deleteArtist() {
 
         binding.artistsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -101,7 +99,7 @@ public class ArtistFragment extends Fragment {
         });
     }
 
-    private void updateArtist(){
+    private void updateArtist() {
         binding.artistsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
