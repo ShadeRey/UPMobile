@@ -57,6 +57,8 @@ public class ArtistFragment extends Fragment {
         addBtnInit();
         deleteArtist();
         updateArtist();
+        initLoadArtists();
+        initSaveArtists();
     }
 
 
@@ -111,5 +113,11 @@ public class ArtistFragment extends Fragment {
                         .commit();
             }
         });
+    }
+    private void initSaveArtists(){
+        binding.saveBtn.setOnClickListener(viewModel::save);
+    }
+    private void initLoadArtists(){
+        binding.loadBtn.setOnClickListener(viewModel::load);
     }
 }
